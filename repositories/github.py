@@ -4,19 +4,31 @@ BASE_URL = "https://api.github.com"
 HEADERS = {"accept": "application/vnd.github.v3+json"}
 
 
-class NotFoundError(Exception):
+class GitHubAPIError(Exception):
     pass
 
 
-class ForbiddenError(Exception):
+class NotFoundError(GitHubAPIError):
     pass
 
 
-class InternalServerError(Exception):
+class ForbiddenError(GitHubAPIError):
     pass
 
 
-class ValidationError(Exception):
+class InternalServerError(GitHubAPIError):
+    pass
+
+
+class ValidationError(GitHubAPIError):
+    pass
+
+
+class BadRequestError(GitHubAPIError):
+    pass
+
+
+class ConflictError(GitHubAPIError):
     pass
 
 
@@ -42,12 +54,28 @@ def get_repo(username, repository):
     return contents
 
 
-def list_commits(username, repository):
+def list_commits(username, repository, since=None, until=None):
     url = "{base}/repos/{owner}/{repo}/commits".format(
         base=BASE_URL, owner=username, repo=repository
     )
-    response = requests.get(url, headers=HEADERS)
-    return response.json()
+
+    params = {"since": since, "until": until}
+    response = requests.get(url, headers=HEADERS, params=params)
+    contents = response.json()
+
+    if response.status_code == 400:
+        raise BadRequestError(contents.get("message", ""))
+
+    if response.status_code == 404:
+        raise NotFoundError(contents.get("message", ""))
+
+    if response.status_code == 409:
+        raise ConflictError(contents.get("message", ""))
+
+    if response.status_code == 500:
+        raise InternalServerError(contents.get("message", ""))
+
+    return contents
 
 
 def get_commit(username, repository, ref):
