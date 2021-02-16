@@ -1,12 +1,18 @@
+from django.db.models import fields
 from rest_framework import serializers
+from .models import Commit, Repository, GitHubProfile
 
-from .models import Commit, Repository
+
+class GitHubProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GitHubProfile
+        fields = ("name", "username", "avatar", "url")
 
 
 class RepositorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Repository
-        fields = ("name",)
+        fields = ("owner", "name", "description")
 
 
 class CommitSerializer(serializers.ModelSerializer):
@@ -17,9 +23,14 @@ class CommitSerializer(serializers.ModelSerializer):
         fields = (
             "message",
             "sha",
-            "author",
             "url",
-            "avatar",
-            "date",
+            "author_name",
+            "author_email",
+            "authored_at",
+            "author_profile",
+            "committer_name",
+            "committer_email",
+            "committed_at",
+            "committer_profile",
             "repository",
         )
