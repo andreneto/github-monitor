@@ -11,7 +11,13 @@ class GitHubProfile(models.Model):
     avatar = models.URLField(max_length=200, blank=True)
     url = models.URLField(max_length=200)
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="github_profile",
+    )
 
     def __str__(self):
         return self.username
