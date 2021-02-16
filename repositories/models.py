@@ -67,7 +67,9 @@ class Commit(models.Model):
         blank=True,
     )
 
-    repository = models.ForeignKey(Repository, on_delete=models.CASCADE)
+    repository = models.ForeignKey(
+        Repository, on_delete=models.CASCADE, related_name="commits"
+    )
 
     def __str__(self):
         return self.message
