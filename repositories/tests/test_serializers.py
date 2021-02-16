@@ -1,5 +1,7 @@
 import datetime
+from unittest import mock
 from django.test import TestCase
+from rest_framework.exceptions import ValidationError
 from repositories.models import GitHubProfile, Repository, Commit
 from repositories.serializers import (
     RepositorySerializer,
@@ -29,7 +31,7 @@ class GitHubProfileSerializerTests(TestCase):
 class RepositorySerializerTests(TestCase):
     def setUp(self):
         profile_attributes = {
-            "github_id": 123,
+            "github_id": 124,
             "name": "Monalisa Octocat",
             "username": "octocat",
             "avatar": "https://avatars.githubusercontent.com/u/2223733?v=4",
@@ -39,16 +41,32 @@ class RepositorySerializerTests(TestCase):
 
         self.repository_attributes = {
             "owner": owner,
-            "name": "TestRepo",
+            "name": "desktop",
             "github_id": 123,
             "description": "",
         }
+
         self.instance = Repository(**self.repository_attributes)
-        self.serializer = RepositorySerializer(instance=self.instance)
+        self.serializer_class = RepositorySerializer
 
     def test_has_expected_fields(self):
-        data = self.serializer.data
+        serializer = self.serializer_class(instance=self.instance)
+        data = serializer.data
         self.assertEqual(set(data.keys()), set(["owner", "name", "description"]))
+
+    @mock.patch("repositories.services.RepositoryService.add_repository")
+    def test_add_repository(self, mock_add_repository):
+        mock_add_repository.return_value = self.instance
+        serializer = self.serializer_class(data={"full_name": "octocat/desktop"})
+        serializer.is_valid()
+        repository = serializer.save()
+        self.assertIsInstance(repository, Repository)
+
+    def test_add_repository_with_invalid_full_name(self):
+        serializer = self.serializer_class(
+            data={"full_name": "invalid--octocat/desktop"}
+        )
+        self.assertRaises(ValidationError, serializer.is_valid, raise_exception=True)
 
 
 class CommitSerializerTests(TestCase):
