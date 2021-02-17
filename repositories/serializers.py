@@ -19,8 +19,8 @@ class RepositorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Repository
-        fields = ("owner", "name", "description", "full_name")
-        read_only_fields = ("owner", "name", "description")
+        fields = ("id", "owner", "name", "description", "full_name")
+        read_only_fields = ("id", "owner", "name", "description")
 
     def create(self, validated_data):
         owner, name = validated_data["full_name"].split("/", 1)
