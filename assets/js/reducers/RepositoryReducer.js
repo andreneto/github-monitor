@@ -1,10 +1,18 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import repositoryAPI from '../services/api/repository';
 
-export const fetchRepositories = createAsyncThunk(
-  'repositories/fetchRepositories',
+export const fetchRepositoryList = createAsyncThunk(
+  'repositories/fetchRepositoryList',
   async () => {
     const response = await repositoryAPI.listRepositories();
+    return response.data;
+  }
+);
+
+export const fetchRepository = createAsyncThunk(
+  'repositories/fetchRepository',
+  async (id) => {
+    const response = await repositoryAPI.getRepository(id);
     return response.data;
   }
 );
@@ -29,7 +37,12 @@ export const fetchCommitsFromRepository = createAsyncThunk(
 
 const initialState = {
   repositories: [],
-  commits: [],
+  repositoryCount: 0,
+  prevPage: null,
+  nextPage: null,
+  loading: true,
+  currentRepository: null,
+  currentCommitList: [],
   successMessage: false,
 };
 
@@ -38,13 +51,24 @@ const repositoriesSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder
-      .addCase(fetchRepositories.fulfilled, (state, action) => ({
+      .addCase(fetchRepositoryList.fulfilled, (state, action) => ({
         ...state,
-        repositories: action.payload,
+        repositories: action.payload.results,
+        repositoryCount: action.payload.count,
+        prevPage: action.payload.previous,
+        nextPage: action.payload.next,
+        loading: false,
+      }))
+      .addCase(fetchRepository.fulfilled, (state, action) => ({
+        ...state,
+        currentRepository: action.payload,
+        loading: false,
       }))
       .addCase(addRepository.fulfilled, (state, action) => ({
         ...state,
         repositories: [...state.repositories, action.payload],
+        repositoryCount: state.repositoryCount + 1,
+        loading: false,
       }))
       .addCase(fetchCommitsFromRepository.fulfilled, (state, action) => ({
         ...state,
