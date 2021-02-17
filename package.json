@@ -8,6 +8,7 @@
   },
   "homepage": "https://github.com/vintasoftware/github-monitor#readme",
   "dependencies": {
+    "@reduxjs/toolkit": "^1.5.0",
     "axios": "^0.20.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
@@ -16,6 +17,7 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
+    "formik": "^2.2.6",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -29,6 +31,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
+    "babel-polyfill": "^6.26.0",
     "eslint": "^7.4.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^7.2.0",
