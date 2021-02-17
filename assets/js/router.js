@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import CommitListContainer from './containers/CommitListContainer';
-import RepoCreateContainer from './containers/RepoCreateContainer';
+import RepositoryLayout from './layouts/RepositoryLayout';
 
 export default (
   <Router>
@@ -16,9 +15,8 @@ export default (
 
       <div id="page-content-wrapper">
         <div className="container-fluid">
-          <RepoCreateContainer />
           <Switch>
-            <Route path="/" exact component={CommitListContainer} />
+            <Route path="/" exact component={RepositoryLayout} />
           </Switch>
         </div>
       </div>

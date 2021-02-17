@@ -1,29 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import * as commitAPI from '../api/CommitAPI';
-import Form from '../components/RepoCreateForm';
+import { addRepository } from '../reducers/RepositoryReducer';
+import RepositoryForm from '../components/RepositoryForm';
 
 class RepoCreateContainer extends React.Component {
-  submit = (values, dispatch) => {
-    const token = document.getElementById('main').dataset.csrftoken;
-    const name = values.name.split('/')[1];
-    const v = { ...values, name };
-    return commitAPI.createRepository(v, { 'X-CSRFToken': token }, dispatch);
+  constructor(props) {
+    super(props);
+    const { addRepository } = props;
+    this.addRepository = addRepository;
+  }
+
+  submit = (values) => {
+    this.addRepository(values.fullName);
   };
 
   render() {
-    const { successMessage } = this.props;
-    return <Form onSubmit={this.submit} successMessage={successMessage} />;
+    return <RepositoryForm onSubmit={this.submit} />;
   }
 }
 
 RepoCreateContainer.propTypes = {
-  successMessage: PropTypes.bool.isRequired,
+  addRepository: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (store) => ({
-  successMessage: store.commitState.successMessage,
-});
+const mapDispatchToProps = {
+  addRepository,
+};
 
-export default connect(mapStateToProps)(RepoCreateContainer);
+export default connect(null, mapDispatchToProps)(RepoCreateContainer);
