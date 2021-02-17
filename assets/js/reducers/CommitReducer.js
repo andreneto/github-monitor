@@ -1,23 +1,15 @@
-import * as types from '../actions/ActionTypes';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   commits: [],
   successMessage: false,
 };
 
-const commitReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case types.GET_COMMITS_SUCCESS:
-      return {
-        ...state,
-        commits: Object.values(action.payload),
-      };
-    case types.CREATE_REPOSITORY_SUCCESS: {
-      return { ...state, successMessage: action.payload.successMessage };
-    }
-    default:
-      return state;
-  }
-};
+const commitsSlice = createSlice({
+  name: 'commits',
+  initialState,
+  reducers: {},
+});
 
-export default commitReducer;
+export const { commitsRequested } = commitsSlice.actions;
+export default commitsSlice.reducer;
