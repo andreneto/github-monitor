@@ -6,11 +6,11 @@ def create_github_profile(backend, response, user=None, *args, **kwargs):
         if user:
             GitHubProfile.objects.update_or_create(
                 github_id=response["id"],
-                user=user,
                 defaults={
                     "name": response.get("name", response["username"]),
                     "username": response["login"],
                     "avatar": response.get("avatar_url", ""),
                     "url": response["html_url"],
+                    "user": user,
                 },
             )
