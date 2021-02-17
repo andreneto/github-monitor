@@ -33,7 +33,7 @@ class RepositoryViewSet(
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get_queryset(self):
-        return self.request.user.github_profile.repositories
+        return self.request.user.github_profile.repositories.all()
 
     def perform_destroy(self, instance):
         return RepositoryService.remove_repository(instance)
