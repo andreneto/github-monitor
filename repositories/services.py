@@ -61,8 +61,12 @@ class RepositoryService:
 
         return repository
 
+    @classmethod
+    def remove_repository(cls, instance: models.Repository):
+        return instance.delete()
+
     @staticmethod
-    def _fetch_repository_data(username, repo_name):
+    def _fetch_repository_data(username: str, repo_name: str):
         try:
             repo = github.get_repo(username=username, repository=repo_name)
         except github.NotFoundError as not_found:
