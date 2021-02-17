@@ -7,6 +7,7 @@ from .models import Commit, Repository, GitHubProfile
 from .serializers import CommitSerializer, RepositorySerializer
 from .services import RepositoryService
 from .permissions import HasGitHubProfilePermission
+from .pagination import StandardPagination
 
 
 class RepositoryViewSet(
@@ -18,6 +19,7 @@ class RepositoryViewSet(
 ):
     serializer_class = RepositorySerializer
     permission_classes = [IsAuthenticated, HasGitHubProfilePermission]
+    pagination_class = StandardPagination
 
     @action(detail=True)
     def commits(self, request, pk=None):
