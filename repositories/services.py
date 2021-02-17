@@ -40,7 +40,7 @@ class RepositoryService:
                 owner=owner_profile,
                 name=repo_data["name"],
                 github_id=repo_data["id"],
-                description=repo_data.get("description", ""),
+                description=repo_data.get("description") or "",
             )
         except KeyError as err:
             raise MalformedResponseError from err
