@@ -5,8 +5,6 @@ import router from './router';
 import store from './store';
 
 ReactDOM.render(
-  <Provider store={store}>
-    {router}
-  </Provider>,
-  document.getElementById('main'),
+  <Provider store={store}>{router}</Provider>,
+  document.getElementById('main')
 );

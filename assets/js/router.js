@@ -1,20 +1,15 @@
 import React from 'react';
-import {
-  Link, BrowserRouter as Router, Route, Switch,
-} from 'react-router-dom';
+import { Link, BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import CommitListContainer from './containers/CommitListContainer';
 import RepoCreateContainer from './containers/RepoCreateContainer';
 
 export default (
   <Router>
     <div id="wrapper" className="toggled">
-
       <div id="sidebar-wrapper">
         <ul className="sidebar-nav">
           <li className="sidebar-brand">
-            <Link to="/">
-              Github Monitor
-            </Link>
+            <Link to="/">Github Monitor</Link>
           </li>
         </ul>
       </div>
@@ -27,7 +22,6 @@ export default (
           </Switch>
         </div>
       </div>
-
     </div>
   </Router>
 );
