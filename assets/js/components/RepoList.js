@@ -7,14 +7,19 @@ const RepoList = (props) => {
   return (
     <div>
       <h1>My monitored repositories</h1>
-      {repositories.length !== 0 &&
-        repositories.map((repository) => (
-          <RepoCard
-            name={repository.name}
-            description={repository.description}
-            owner={repository.owner}
-          />
-        ))}
+      <div className="row">
+        {repositories.length !== 0 &&
+          repositories.map((repository) => (
+            <div className="col-sm-12 col-md-6" key={`${repository.id}`}>
+              <RepoCard
+                id={repository.id}
+                name={repository.name}
+                description={repository.description}
+                owner={repository.owner}
+              />
+            </div>
+          ))}
+      </div>
     </div>
   );
 };

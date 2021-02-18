@@ -13,7 +13,7 @@ const RepositoryForm = ({ onSubmit }) => {
   });
 
   return (
-    <div>
+    <div className="mb-5">
       <div className="alert alert-success" role="alert">
         Repository added successfully!
       </div>
