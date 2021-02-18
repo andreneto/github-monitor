@@ -3,8 +3,12 @@ import commitAPI from '../services/api/commit';
 
 export const fetchCommitList = createAsyncThunk(
   'commits/fetchCommitList',
-  async (page = 1, repositoryId = '', authorId = '') => {
-    const response = await commitAPI.listCommits(page, repositoryId, authorId);
+  async ({ page = 1, repositoryId = '', authorEmail = '' }) => {
+    const response = await commitAPI.listCommits({
+      page,
+      repositoryId,
+      authorEmail,
+    });
     return response.data;
   }
 );
@@ -12,6 +16,11 @@ export const fetchCommitList = createAsyncThunk(
 const initialState = {
   commits: [],
   commitCount: 0,
+  filters: {
+    authorEmail: '',
+    repositoryId: '',
+  },
+  currentPageNumber: 1,
   prevPage: null,
   nextPage: null,
 };
