@@ -4,7 +4,6 @@ import commitAPI from '../services/api/commit';
 export const fetchCommitList = createAsyncThunk(
   'commits/fetchCommitList',
   async ({ page = 1, repositoryId = '', authorEmail = '' }) => {
-    console.log('THUNK');
     const response = await commitAPI.listCommits({
       page,
       repositoryId,
