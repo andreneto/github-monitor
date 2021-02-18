@@ -40,6 +40,7 @@ class RepositorySerializerTests(TestCase):
         owner = GitHubProfile.objects.create(**profile_attributes)
 
         self.repository_attributes = {
+            "id": 1,
             "owner": owner,
             "name": "desktop",
             "github_id": 123,
@@ -52,7 +53,7 @@ class RepositorySerializerTests(TestCase):
     def test_has_expected_fields(self):
         serializer = self.serializer_class(instance=self.instance)
         data = serializer.data
-        self.assertEqual(set(data.keys()), set(["owner", "name", "description"]))
+        self.assertEqual(set(data.keys()), set(["id", "owner", "name", "description"]))
 
     @mock.patch("repositories.services.RepositoryService.add_repository")
     def test_add_repository(self, mock_add_repository):
