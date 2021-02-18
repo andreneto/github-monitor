@@ -49,6 +49,14 @@ const initialState = {
 const repositoriesSlice = createSlice({
   name: 'repositories',
   initialState,
+  reducers: {
+    setCurrentRepository: (state, action) => ({
+      ...state,
+      currentRepository: state.repositories.find(
+        (repository) => repository.id === parseInt(action.payload, 10)
+      ),
+    }),
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchRepositoryList.fulfilled, (state, action) => ({
@@ -77,4 +85,5 @@ const repositoriesSlice = createSlice({
   },
 });
 
+export const { setCurrentRepository } = repositoriesSlice.actions;
 export default repositoriesSlice.reducer;
