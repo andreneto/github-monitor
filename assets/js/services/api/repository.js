@@ -1,7 +1,10 @@
 import axios from 'axios';
 import { getCSRFToken } from '../../utils/csrf';
+import { getBaseURL } from '../../utils/api';
 
-const APIClient = axios.create();
+const APIClient = axios.create({
+  baseURL: getBaseURL(),
+});
 APIClient.defaults.headers['X-CSRFToken'] = getCSRFToken();
 
 const listRepositories = () => APIClient.get('api/repositories/');
