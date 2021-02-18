@@ -2,6 +2,7 @@ from rest_framework import status, viewsets, mixins
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from django_filters import rest_framework as filters
 
 from .models import Commit, Repository, GitHubProfile
 from .serializers import CommitSerializer, RepositorySerializer
@@ -37,3 +38,17 @@ class RepositoryViewSet(
 
     def perform_destroy(self, instance):
         return RepositoryService.remove_repository(instance)
+
+
+class CommitViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    serializer_class = CommitSerializer
+    permission_classes = [IsAuthenticated, HasGitHubProfilePermission]
+    pagination_class = StandardPagination
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ("author_email", "repository")
+
+    def get_queryset(self):
+        repo_ids = self.request.user.github_profile.repositories.values_list(
+            "commits__id", flat=True
+        )
+        return Commit.objects.filter(id__in=repo_ids)
