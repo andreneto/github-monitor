@@ -77,6 +77,7 @@ const repositoriesSlice = createSlice({
         repositories: [...state.repositories, action.payload],
         repositoryCount: state.repositoryCount + 1,
         loading: false,
+        successMessage: true,
       }))
       .addCase(fetchCommitsFromRepository.fulfilled, (state, action) => ({
         ...state,
