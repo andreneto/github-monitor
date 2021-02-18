@@ -4,6 +4,7 @@ import commitAPI from '../services/api/commit';
 export const fetchCommitList = createAsyncThunk(
   'commits/fetchCommitList',
   async ({ page = 1, repositoryId = '', authorEmail = '' }) => {
+    console.log('THUNK');
     const response = await commitAPI.listCommits({
       page,
       repositoryId,
@@ -28,6 +29,16 @@ const initialState = {
 const commitsSlice = createSlice({
   name: 'commits',
   initialState,
+  reducers: {
+    setPageNumber: (state, action) => ({
+      ...state,
+      currentPageNumber: action.payload,
+    }),
+    setFilters: (state, action) => ({
+      ...state,
+      filters: action.payload,
+    }),
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchCommitList.fulfilled, (state, action) => ({
       ...state,
@@ -39,4 +50,5 @@ const commitsSlice = createSlice({
   },
 });
 
+export const { setPageNumber, setFilters } = commitsSlice.actions;
 export default commitsSlice.reducer;

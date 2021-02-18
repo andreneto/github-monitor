@@ -1,7 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchCommitList } from '../reducers/CommitReducer';
+import {
+  fetchCommitList,
+  setPageNumber,
+  setFilters,
+} from '../reducers/CommitReducer';
 import CommitList from '../components/CommitList';
 
 class CommitListContainer extends React.Component {
@@ -12,6 +16,57 @@ class CommitListContainer extends React.Component {
       currentPageNumber,
       filters,
     } = this.props;
+
+    fetchCommitList({
+      page: currentPageNumber,
+      repositoryId,
+      authorEmail: filters.authorEmail,
+    });
+
+    this.pageChanged = this.pageChanged.bind(this);
+    this.filterChanged = this.filterChanged.bind(this);
+    this.filterReseted = this.filterReseted.bind(this);
+  }
+
+  pageChanged(page) {
+    const {
+      setPageNumber,
+      fetchCommitList,
+      repositoryId,
+      filters,
+    } = this.props;
+
+    setPageNumber(page);
+    fetchCommitList({
+      page,
+      repositoryId,
+      authorEmail: filters.authorEmail,
+    });
+  }
+
+  filterReseted() {
+    const {
+      repositoryId,
+      currentPageNumber,
+      setFilters,
+      fetchCommitList,
+    } = this.props;
+    setFilters({ authorEmail: '', repositoryId });
+    fetchCommitList({
+      page: currentPageNumber,
+      repositoryId,
+      authorEmail: '',
+    });
+  }
+
+  filterChanged(filters) {
+    const {
+      repositoryId,
+      currentPageNumber,
+      setFilters,
+      fetchCommitList,
+    } = this.props;
+    setFilters({ repositoryId, ...filters });
     fetchCommitList({
       page: currentPageNumber,
       repositoryId,
@@ -20,7 +75,14 @@ class CommitListContainer extends React.Component {
   }
 
   render() {
-    const { commits, commitsCount, prevPage, nextPage } = this.props;
+    const {
+      commits,
+      commitsCount,
+      prevPage,
+      nextPage,
+      currentPageNumber,
+      filters,
+    } = this.props;
     return (
       <div>
         <CommitList
@@ -28,6 +90,11 @@ class CommitListContainer extends React.Component {
           commitCount={commitsCount}
           prevPage={prevPage}
           nextPage={nextPage}
+          currentPageNumber={currentPageNumber}
+          paginationHandler={this.pageChanged}
+          onFilterReset={this.filterReseted}
+          onFilterChange={this.filterChanged}
+          filters={filters}
         />
       </div>
     );
@@ -46,6 +113,8 @@ CommitListContainer.propTypes = {
   nextPage: PropTypes.string,
   commits: PropTypes.arrayOf(PropTypes.object).isRequired,
   fetchCommitList: PropTypes.func.isRequired,
+  setPageNumber: PropTypes.func.isRequired,
+  setFilters: PropTypes.func.isRequired,
 };
 
 CommitListContainer.defaultProps = {
@@ -70,6 +139,8 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = {
   fetchCommitList,
+  setPageNumber,
+  setFilters,
 };
 
 export default connect(
