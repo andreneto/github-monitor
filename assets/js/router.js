@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import RepositoryLayout from './layouts/RepositoryLayout';
+import RepositoryDetailLayout from './layouts/RepositoryDetailLayout';
+import RepositoryListLayout from './layouts/RepositoryListLayout';
 
 export default (
   <Router>
@@ -16,7 +17,8 @@ export default (
       <div id="page-content-wrapper">
         <div className="container-fluid">
           <Switch>
-            <Route path="/" exact component={RepositoryLayout} />
+            <Route path="/" exact component={RepositoryListLayout} />
+            <Route path="/:id" exact component={RepositoryDetailLayout} />
           </Switch>
         </div>
       </div>
