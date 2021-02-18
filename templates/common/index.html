@@ -16,5 +16,5 @@
 {% endblock %}
 
 {% block body %}
-  <div id="main" data-username="{{ user }}" data-csrftoken="{{ csrf_token }}"></div>
+  <div id="main" data-username="{{ user }}" data-csrftoken="{{ csrf_token }}" data-baseurl="{{ request.scheme }}://{{ request.get_host }}{% url 'common:home' %}"></div>
 {% endblock %}
