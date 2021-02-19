@@ -36,28 +36,31 @@ class RepositoryService:
                 },
             )
 
-            repository = models.Repository.objects.create(
-                owner=owner_profile,
-                name=repo_data["name"],
+            repository, repo_created = models.Repository.objects.get_or_create(
                 github_id=repo_data["id"],
-                description=repo_data.get("description") or "",
+                defaults={
+                    "owner": owner_profile,
+                    "name": repo_data["name"],
+                    "description": repo_data.get("description") or "",
+                },
             )
         except KeyError as err:
             raise MalformedResponseError from err
 
-        commits = cls._fetch_repository_commits(
-            username=username,
-            repo_name=repo_name,
-            since=commits_since,
-            until=commits_until,
-        )
+        if repo_created:
+            commits = cls._fetch_repository_commits(
+                username=username,
+                repo_name=repo_name,
+                since=commits_since,
+                until=commits_until,
+            )
 
-        commits = models.Commit.objects.bulk_create(
-            [
-                models.Commit(**cls._prepare_commit(commit, repository))
-                for commit in commits
-            ]
-        )
+            commits = models.Commit.objects.bulk_create(
+                [
+                    models.Commit(**cls._prepare_commit(commit, repository))
+                    for commit in commits
+                ]
+            )
 
         return repository
 
