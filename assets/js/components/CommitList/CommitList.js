@@ -20,7 +20,7 @@ const CommitList = (props) => {
       <CommitFilter onReset={onFilterReset} authorEmail={filters.authorEmail} />
       {commits && (
         <div className="row">
-          {commits.length !== 0 &&
+          {commits.length !== 0 ? (
             commits.map((commit) => (
               <div className="col-sm-12" key={`${commit.sha}`}>
                 <CommitCard
@@ -33,7 +33,10 @@ const CommitList = (props) => {
                   onFilterChange={onFilterChange}
                 />
               </div>
-            ))}
+            ))
+          ) : (
+            <p>No commits in the last 30 days</p>
+          )}
 
           {commits.length !== 0 && (
             <Paginator
