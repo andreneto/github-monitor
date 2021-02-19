@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addRepository } from '../reducers/RepositoryReducer';
-import RepositoryForm from '../components/RepositoryForm';
+import RepoCreateForm from '../components/RepoCreateForm';
 
 class RepoCreateContainer extends React.Component {
   constructor(props) {
@@ -18,7 +18,7 @@ class RepoCreateContainer extends React.Component {
   render() {
     const { successMessage } = this.props;
     return (
-      <RepositoryForm
+      <RepoCreateForm
         onSubmit={this.submit}
         showSuccessMessage={successMessage}
       />
