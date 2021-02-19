@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import RepoCard from './RepoCard';
+import RepoCard from '../RepoCard';
 
 const RepoList = (props) => {
   const { repositories } = props;

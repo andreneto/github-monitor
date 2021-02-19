@@ -11,7 +11,7 @@ const validate = (values) => {
   return errors;
 };
 
-const RepositoryForm = ({ onSubmit, showSuccessMessage }) => {
+const RepoCreateForm = ({ onSubmit, showSuccessMessage }) => {
   const formik = useFormik({
     initialValues: {
       fullName: '',
@@ -69,9 +69,9 @@ const RepositoryForm = ({ onSubmit, showSuccessMessage }) => {
   );
 };
 
-RepositoryForm.propTypes = {
+RepoCreateForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   showSuccessMessage: PropTypes.func.isRequired,
 };
 
-export default RepositoryForm;
+export default RepoCreateForm;

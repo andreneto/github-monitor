@@ -15,7 +15,7 @@ const CommitCard = ({
     onFilterChange({ authorEmail: e.target.text });
   });
   return (
-    <div className="card mb-3" style={{ height: '150px' }}>
+    <div className="card mb-3" style={{ height: '100px' }}>
       <div className="card-body">
         <h5 className="card-title">{message}</h5>
         <h6 className="card-subtitle mb-2 text-muted">

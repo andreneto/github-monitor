@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CommitCard from './CommitCard';
-import Paginator from './Paginator';
-import CommitFilter from './CommitFilter';
+import CommitCard from '../CommitCard';
+import Paginator from '../Paginator/Paginator';
+import CommitFilter from '../CommitFilter';
 
 const CommitList = (props) => {
   const {
