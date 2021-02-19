@@ -11,7 +11,13 @@ class RepoListContainer extends React.Component {
   }
 
   render() {
-    const { repositories, repositoryCount, prevPage, nextPage } = this.props;
+    const {
+      repositories,
+      repositoryCount,
+      prevPage,
+      nextPage,
+      showStats,
+    } = this.props;
     return (
       <div>
         <RepoList
@@ -19,6 +25,7 @@ class RepoListContainer extends React.Component {
           repositoryCount={repositoryCount}
           prevPage={prevPage}
           nextPage={nextPage}
+          showStats={showStats}
         />
       </div>
     );
@@ -31,11 +38,13 @@ RepoListContainer.propTypes = {
   prevPage: PropTypes.string,
   repositories: PropTypes.arrayOf(PropTypes.object).isRequired,
   fetchRepositoryList: PropTypes.func.isRequired,
+  showStats: PropTypes.bool,
 };
 
 RepoListContainer.defaultProps = {
   nextPage: '',
   prevPage: '',
+  showStats: false,
 };
 
 const mapStateToProps = (store) => ({

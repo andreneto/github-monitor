@@ -1,5 +1,6 @@
 import datetime
 from repositories import models, github
+from .tasks import fetch_commits
 
 
 class RemoteAPIError(Exception):
@@ -48,18 +49,12 @@ class RepositoryService:
             raise MalformedResponseError from err
 
         if repo_created:
-            commits = cls._fetch_repository_commits(
+            fetch_commits.delay(
                 username=username,
                 repo_name=repo_name,
+                repository_id=repository.id,
                 since=commits_since,
                 until=commits_until,
-            )
-
-            commits = models.Commit.objects.bulk_create(
-                [
-                    models.Commit(**cls._prepare_commit(commit, repository))
-                    for commit in commits
-                ]
             )
 
         return repository
@@ -112,7 +107,6 @@ class RepositoryService:
 
     @staticmethod
     def _prepare_commit(commit, repository):
-
         try:
             author_profile, created = models.GitHubProfile.objects.get_or_create(
                 github_id=commit["author"]["id"],
@@ -125,7 +119,10 @@ class RepositoryService:
             )
         except KeyError as err:
             if err.args[0] != "author":
-                raise MalformedResponseError from err
+                # raise MalformedResponseError from err
+                pass
+            author_profile = None
+        except TypeError as err:
             author_profile = None
 
         try:
@@ -140,8 +137,11 @@ class RepositoryService:
             )
         except KeyError as err:
             if err.args[0] != "committer":
-                raise MalformedResponseError from err
+                # raise MalformedResponseError from err
+                pass
             committer_profile = None
+        except TypeError as err:
+            author_profile = None
 
         return {
             "message": commit["commit"]["message"],

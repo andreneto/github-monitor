@@ -17,10 +17,12 @@ class RepositorySerializer(serializers.ModelSerializer):
     )
     owner = GitHubProfileSerializer(many=False, read_only=True)
 
+    commit_count = serializers.IntegerField(read_only=True)
+
     class Meta:
         model = Repository
-        fields = ("id", "owner", "name", "description", "full_name")
-        read_only_fields = ("id", "owner", "name", "description")
+        fields = ("id", "owner", "name", "description", "full_name", "commit_count")
+        read_only_fields = ("id", "owner", "name", "description", "commit_count")
 
     def create(self, validated_data):
         owner, name = validated_data["full_name"].split("/", 1)

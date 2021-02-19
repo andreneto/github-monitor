@@ -29,7 +29,10 @@ const CommitList = (props) => {
                   authorName={commit.author_name}
                   authorEmail={commit.author_email}
                   authoredAt={commit.authored_at}
-                  authorAvatar={commit.author_profile.avatar || ''}
+                  authorAvatar={
+                    commit?.author_profile?.avatar ||
+                    '/static/img/identicon.png'
+                  }
                   onFilterChange={onFilterChange}
                 />
               </div>

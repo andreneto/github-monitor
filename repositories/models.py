@@ -76,3 +76,48 @@ class Commit(models.Model):
 
     class Meta:
         ordering = ("-authored_at",)
+
+    @staticmethod
+    def prepare(commit, repository):
+        try:
+            author_profile, created = GitHubProfile.objects.get_or_create(
+                github_id=commit["author"]["id"],
+                defaults={
+                    "name": commit["author"]["login"],
+                    "username": commit["author"]["login"],
+                    "avatar": commit.get("author", {}).get("avatar_url", ""),
+                    "url": commit["author"]["html_url"],
+                },
+            )
+        except (KeyError, TypeError) as err:
+            author_profile = None
+
+        try:
+            committer_profile, created = GitHubProfile.objects.get_or_create(
+                github_id=commit["committer"]["id"],
+                defaults={
+                    "name": commit["committer"]["login"],
+                    "username": commit["committer"]["login"],
+                    "avatar": commit.get("committer", {}).get("avatar_url", ""),
+                    "url": commit["committer"]["html_url"],
+                },
+            )
+        except (KeyError, TypeError) as err:
+            committer_profile = None
+
+        return Commit(
+            **{
+                "message": commit["commit"]["message"],
+                "sha": commit["sha"],
+                "url": commit["commit"]["url"],
+                "author_name": commit["commit"]["author"]["name"],
+                "author_email": commit["commit"]["author"]["email"],
+                "authored_at": commit["commit"]["author"]["date"],
+                "author_profile": author_profile,
+                "committer_name": commit["commit"]["committer"]["name"],
+                "committer_email": commit["commit"]["committer"]["email"],
+                "committed_at": commit["commit"]["committer"]["date"],
+                "committer_profile": committer_profile,
+                "repository": repository,
+            }
+        )

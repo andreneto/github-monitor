@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import RepositoryDetailLayout from './layouts/RepositoryDetailLayout';
 import RepositoryListLayout from './layouts/RepositoryListLayout';
+import RepositoryStatsLayout from './layouts/RepositoryStatsLayout';
 
 export default (
   <Router>
@@ -11,6 +12,9 @@ export default (
           <li className="sidebar-brand">
             <Link to="/">Github Monitor</Link>
           </li>
+          <li>
+            <Link to="/stats">Show stats</Link>
+          </li>
         </ul>
       </div>
 
@@ -18,6 +22,7 @@ export default (
         <div className="container-fluid">
           <Switch>
             <Route path="/" exact component={RepositoryListLayout} />
+            <Route path="/stats" exact component={RepositoryStatsLayout} />
             <Route path="/:id" exact component={RepositoryDetailLayout} />
           </Switch>
         </div>

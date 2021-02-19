@@ -14,13 +14,16 @@ class CommitListContainer extends React.Component {
       fetchCommitList,
       repositoryId,
       currentPageNumber,
+      setFilters,
       filters,
     } = this.props;
+
+    setFilters({ authorEmail: '', repositoryId });
 
     fetchCommitList({
       page: currentPageNumber,
       repositoryId,
-      authorEmail: filters.authorEmail,
+      authorEmail: '',
     });
 
     this.pageChanged = this.pageChanged.bind(this);
@@ -62,13 +65,14 @@ class CommitListContainer extends React.Component {
   filterChanged(filters) {
     const {
       repositoryId,
-      currentPageNumber,
+      setPageNumber,
       setFilters,
       fetchCommitList,
     } = this.props;
     setFilters({ repositoryId, ...filters });
+    setPageNumber(1);
     fetchCommitList({
-      page: currentPageNumber,
+      page: 1,
       repositoryId,
       authorEmail: filters.authorEmail,
     });

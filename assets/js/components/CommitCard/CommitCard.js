@@ -20,8 +20,17 @@ const CommitCard = ({
       className="card mb-3 commit-card"
       style={{ height: '150px', maxWidth: '800px', flexDirection: 'row' }}
     >
-      <div className="card-body">
-        <h5 className="card-title">{message}</h5>
+      <div className="card-body" style={{ width: '70%' }}>
+        <h5
+          className="card-title"
+          style={{
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+          }}
+        >
+          {message}
+        </h5>
         <h6 className="card-subtitle mb-2 text-muted">
           {authorName} (
           <a onClick={filterHandler} href="#">

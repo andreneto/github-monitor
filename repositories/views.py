@@ -1,3 +1,4 @@
+from django.db.models import Count
 from rest_framework import status, viewsets, mixins
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -34,7 +35,9 @@ class RepositoryViewSet(
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get_queryset(self):
-        return self.request.user.github_profile.repositories.all()
+        return self.request.user.github_profile.repositories.annotate(
+            commit_count=Count("commits")
+        ).all()
 
     def perform_destroy(self, instance):
         return RepositoryService.remove_repository(instance)
