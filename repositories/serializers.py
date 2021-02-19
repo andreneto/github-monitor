@@ -30,6 +30,7 @@ class RepositorySerializer(serializers.ModelSerializer):
 
 class CommitSerializer(serializers.ModelSerializer):
     repository = serializers.StringRelatedField(many=False)
+    author_profile = GitHubProfileSerializer(many=False, read_only=True)
 
     class Meta:
         model = Commit

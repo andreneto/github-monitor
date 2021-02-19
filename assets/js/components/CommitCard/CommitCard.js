@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
+import Moment from 'react-moment';
 
 const CommitCard = ({
   sha,
@@ -15,7 +16,10 @@ const CommitCard = ({
     onFilterChange({ authorEmail: e.target.text });
   });
   return (
-    <div className="card mb-3" style={{ height: '100px' }}>
+    <div
+      className="card mb-3 commit-card"
+      style={{ height: '150px', maxWidth: '800px', flexDirection: 'row' }}
+    >
       <div className="card-body">
         <h5 className="card-title">{message}</h5>
         <h6 className="card-subtitle mb-2 text-muted">
@@ -25,8 +29,11 @@ const CommitCard = ({
           </a>
           )
         </h6>
-        <p className="card-text"></p>
+        <p className="card-text text-muted">
+          Authored at <Moment date={authoredAt} />
+        </p>
       </div>
+      <img className="img-thumbnail" src={authorAvatar} alt="User avatar" />
     </div>
   );
 };
