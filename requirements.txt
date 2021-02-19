@@ -5,6 +5,8 @@ Django==3.0.7
 django-filter==2.4.0
 djangorestframework==3.11.0
 django-webpack-loader==0.7.0
+factory-boy==3.2.0
+Faker==6.3.0
 psycopg2-binary==2.8.5
 python-decouple==3.3
 pytz==2020.1
