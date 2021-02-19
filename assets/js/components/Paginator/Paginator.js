@@ -25,6 +25,7 @@ const Paginator = ({ currentPageNumber, pageCount, onPageChange }) => {
         <Pagination.Item
           onClick={pageHandler}
           active={currentPageNumber === value + 1}
+          key={value + 1}
         >
           {value + 1}
         </Pagination.Item>
