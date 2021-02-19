@@ -5,7 +5,7 @@ var BundleTracker = require('webpack-bundle-tracker');
 module.exports = {
   mode: 'development',
   context: __dirname,
-  entry: ['babel-polyfill', './assets/js/index'],
+  entry: ['./assets/js/index'],
   output: {
     path: path.resolve('./assets/bundles/'),
     filename: '[name]-[hash].js',
